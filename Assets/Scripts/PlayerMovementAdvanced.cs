@@ -1,6 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMovementAdvanced : MonoBehaviour
 {
     [Header("Movement")]
     private float moveSpeed;
@@ -29,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-
+    
 
     public Transform orientation;
 
@@ -85,8 +88,8 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        // When to jump
-        if (Input.GetButtonDown("Jump") && readyToJump && grounded)
+        // when to jump
+        if(Input.GetButtonDown("Jump") && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -95,54 +98,48 @@ public class PlayerController : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        // Crouch toggle
+        // start crouch
         if (Input.GetButtonDown("Crouch"))
         {
-            if (state != MovementState.crouching)
-            {   
-                state = MovementState.crouching;
-                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-            }
-            else if (state == MovementState.crouching)
-            {
-                // Stop crouching
-                Debug.Log("Stand up");
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        }
 
-                state = grounded ? MovementState.walking : MovementState.air;
-                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-            }
+        // stop crouch
+        if (Input.GetButtonUp("Crouch"))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
     }
 
     private void StateHandler()
     {
-        //// Mode - Crouching
-        //if (Input.GetButtonDown("Crouch"))
-        //{
-        //    state = MovementState.crouching;
-        //    moveSpeed = crouchSpeed;
-        //}
+        // Mode - Crouching
+        if (Input.GetButton("Crouch"))
+        {
+            state = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+        }
 
-        //// Mode - Sprinting
-        //else if (grounded && Input.GetButtonDown("Sprint"))
-        //{
-        //    state = MovementState.sprinting;
-        //    moveSpeed = sprintSpeed;
-        //}
+        // Mode - Sprinting
+        else if(grounded && Input.GetButton("Sprint"))
+        {
+            state = MovementState.sprinting;
+            moveSpeed = sprintSpeed;
+        }
 
-        //// Mode - Walking
-        //else if (grounded)
-        //{
-        //    state = MovementState.walking;
-        //    moveSpeed = walkSpeed;
-        //}
+        // Mode - Walking
+        else if (grounded)
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
+        }
 
-        //// Mode - Air
-        //else
-        //{
-        //    state = MovementState.air;
-        //}
+        // Mode - Air
+        else
+        {
+            state = MovementState.air;
+        }
     }
 
     private void MovePlayer()
@@ -160,11 +157,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // on ground
-        else if (grounded)
+        else if(grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
         // in air
-        else if (!grounded)
+        else if(!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // turn gravity off while on slope
@@ -212,7 +209,7 @@ public class PlayerController : MonoBehaviour
 
     private bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeAngle && angle != 0;
