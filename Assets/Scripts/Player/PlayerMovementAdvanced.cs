@@ -7,34 +7,34 @@ public class PlayerMovementAdvanced : MonoBehaviour
 {
     [Header("Movement")]
     private float moveSpeed;
-    public float walkSpeed;
-    public float sprintSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float sprintSpeed;
 
-    public float groundDrag;
+    [SerializeField] float groundDrag;
 
     [Header("Jumping")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
+    [SerializeField] float jumpForce;
+    [SerializeField] float jumpCooldown;
+    [SerializeField] float airMultiplier;
     bool readyToJump;
 
     [Header("Crouching")]
-    public float crouchSpeed;
-    public float crouchYScale;
-    private float startYScale;
+    [SerializeField] float crouchSpeed;
+    [SerializeField] float crouchYScale;
+    [SerializeField] float startYScale;
 
     [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    [SerializeField] float playerHeight;
+    [SerializeField] LayerMask whatIsGround;
     bool grounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    [SerializeField] float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-    
 
-    public Transform orientation;
+
+    [SerializeField] Transform orientation;
 
     float horizontalInput;
     float verticalInput;
@@ -44,6 +44,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     Rigidbody rb;
 
     public MovementState state;
+
     public enum MovementState
     {
         walking,

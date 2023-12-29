@@ -177,7 +177,7 @@ Transform:
   m_GameObject: {fileID: 48828821}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.94, z: 10.48}
+  m_LocalPosition: {x: 0, y: 4.01, z: -2.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -206,6 +206,7 @@ MonoBehaviour:
   airMultiplier: 0.4
   crouchSpeed: 5
   crouchYScale: 0.5
+  startYScale: 0
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
@@ -331,8 +332,8 @@ GameObject:
   - component: {fileID: 330585546}
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
-  - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585547}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -347,7 +348,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &330585545
 Camera:
   m_ObjectHideFlags: 0
@@ -470,8 +471,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d4c55a9a97a8c4188633f5f01f6010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 1000
-  sensY: 1000
+  sensX: 5000
+  sensY: 5000
   orientation: {fileID: 605366554}
 --- !u!1 &400467190
 GameObject:
