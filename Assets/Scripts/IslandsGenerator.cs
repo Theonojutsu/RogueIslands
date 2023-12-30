@@ -5,39 +5,41 @@ using UnityEngine;
 public class IslandsGenerator : MonoBehaviour
 {
     [SerializeField] GameObject island;
+    [SerializeField] float spacingIsland = 500f;
 
     [SerializeField] List<GameObject> L1 = new List<GameObject>();
     [SerializeField] List<GameObject> L2 = new List<GameObject>();
     [SerializeField] List<GameObject> L3 = new List<GameObject>();
     [SerializeField] List<GameObject> L4 = new List<GameObject>();
 
-    private void Awake()
+    void Awake()
     {
-        SpawnIslands();
+        IslandManager();
+        CreateIslands(1, L3);
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.gameObject.CompareTag("TrigQuay"))
-    //    {
-    //        Destroy(other);
-    //        SpawnIslands();
-    //    }
-    //}
-
-    void SpawnIslands()
+    void OnTriggerEnter(Collider other)
     {
-        // Position de(s) (l')ile(s) que j'instancie
-        Vector3 islandsPos = new(0, 0, 500);
+        if (other.gameObject.CompareTag("Quay"))
+        {
+            IslandManager();
+        }
+    }
 
+    void IslandManager()
+    {
         if (L1.Count > 0)
         {
+            foreach (GameObject islands in L1)
+            {
+                Destroy(islands);
+            }
             L1.Clear();
         }
 
         if (L2.Count > 0)
         {
-            L1.AddRange(L2);
+            L1.AddRange(L2);           
             L2.Clear();
         }
 
@@ -53,7 +55,15 @@ public class IslandsGenerator : MonoBehaviour
             L4.Clear();
         }
 
+        CreateIslands(2, L4);
+    }
+
+    void CreateIslands(int distance, List<GameObject> Liste)
+    {
+        // Position de(s) (l')ile(s) que j'instancie
+        Vector3 islandsPos = new(0, 0, (transform.position.z) + distance * spacingIsland);
+
         GameObject createdIsland = Instantiate(island, islandsPos, Quaternion.identity);
-        L4.Add(createdIsland);
+        Liste.Add(createdIsland);
     }
 }
