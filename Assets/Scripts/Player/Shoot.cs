@@ -22,9 +22,6 @@ public class Shoot : MonoBehaviour
     [SerializeField] float grapplingCd;
     private float grapplingCdTimer;
 
-    [Header("Input")]
-    [SerializeField] KeyCode grappleKey = KeyCode.Mouse1;
-
     private bool grappling;
 
     private void Start()
@@ -34,7 +31,8 @@ public class Shoot : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(grappleKey)) StartGrapple();
+        if (Input.GetButtonDown("RightClic/R1")) 
+            StartGrapple();
 
         if (grapplingCdTimer > 0)
             grapplingCdTimer -= Time.deltaTime;
