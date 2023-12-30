@@ -6,24 +6,24 @@ public class Shoot : MonoBehaviour
 {
     [Header("References")]
     private PlayerMovementGrappling pm;
-    public Transform cam;
+    [SerializeField] Transform cam;
     public Transform gunTip;
-    public LayerMask whatIsGrappleable;
-    public LineRenderer lr;
+    [SerializeField] LayerMask whatIsGrappleable;
+    [SerializeField] LineRenderer lr;
 
     [Header("Grappling")]
-    public float maxGrappleDistance;
-    public float grappleDelayTime;
-    public float overshootYAxis;
+    [SerializeField] float maxGrappleDistance;
+    [SerializeField] float grappleDelayTime;
+    [SerializeField] float overshootYAxis;
 
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
-    public float grapplingCd;
+    [SerializeField] float grapplingCd;
     private float grapplingCdTimer;
 
     [Header("Input")]
-    public KeyCode grappleKey = KeyCode.Mouse1;
+    [SerializeField] KeyCode grappleKey = KeyCode.Mouse1;
 
     private bool grappling;
 
@@ -39,12 +39,6 @@ public class Shoot : MonoBehaviour
         if (grapplingCdTimer > 0)
             grapplingCdTimer -= Time.deltaTime;
     }
-
-    //private void LateUpdate()
-    //{
-    //    if (grappling)
-    //        lr.SetPosition(0, gunTip.position);
-    //}
 
     private void StartGrapple()
     {
@@ -67,9 +61,6 @@ public class Shoot : MonoBehaviour
 
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
-
-        //lr.enabled = true;
-        //lr.SetPosition(1, grapplePoint);
     }
 
     private void ExecuteGrapple()
@@ -95,8 +86,6 @@ public class Shoot : MonoBehaviour
         grappling = false;
 
         grapplingCdTimer = grapplingCd;
-
-        //lr.enabled = false;
     }
 
     public bool IsGrappling()

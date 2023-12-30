@@ -8,43 +8,38 @@ public class PlayerMovementGrappling : MonoBehaviour
 {
     [Header("Movement")]
     private float moveSpeed;
-    public float walkSpeed;
-    public float sprintSpeed;
-    public float swingSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float sprintSpeed;
+    [SerializeField] float swingSpeed;
 
-    public float groundDrag;
+    [SerializeField] float groundDrag;
 
     [Header("Jumping")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
+    [SerializeField] float jumpForce;
+    [SerializeField] float jumpCooldown;
+    [SerializeField] float airMultiplier;
     bool readyToJump;
 
     [Header("Crouching")]
-    public float crouchSpeed;
-    public float crouchYScale;
+    [SerializeField] float crouchSpeed;
+    [SerializeField] float crouchYScale;
     private float startYScale;
 
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode sprintKey = KeyCode.LeftShift;
-    public KeyCode crouchKey = KeyCode.LeftControl;
-
     [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    [SerializeField] float playerHeight;
+    [SerializeField] LayerMask whatIsGround;
     bool grounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    [SerializeField] float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
     [Header("Camera Effects")]
-    public PlayerCam cam;
-    public float grappleFov = 95f;
+    [SerializeField] PlayerCam cam;
+    [SerializeField] float grappleFov = 95f;
 
-    public Transform orientation;
+    [SerializeField] Transform orientation;
 
     float horizontalInput;
     float verticalInput;
@@ -94,8 +89,6 @@ public class PlayerMovementGrappling : MonoBehaviour
             rb.drag = groundDrag;
         else
             rb.drag = 0;
-
-        //TextStuff();
     }
 
     private void FixedUpdate()
@@ -109,7 +102,7 @@ public class PlayerMovementGrappling : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetButtonDown("Jump") && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -119,14 +112,14 @@ public class PlayerMovementGrappling : MonoBehaviour
         }
 
         // start crouch
-        if (Input.GetKeyDown(crouchKey))
+        if (Input.GetButtonDown("Crouch"))
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         }
 
         // stop crouch
-        if (Input.GetKeyUp(crouchKey))
+        if (Input.GetButtonUp("Crouch"))
         {
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
@@ -157,14 +150,14 @@ public class PlayerMovementGrappling : MonoBehaviour
         }
 
         // Mode - Crouching
-        else if (Input.GetKey(crouchKey))
+        else if (Input.GetButton("Crouch"))
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
         }
 
         // Mode - Sprinting
-        else if (grounded && Input.GetKey(sprintKey))
+        else if (grounded && Input.GetButton("Sprint"))
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
@@ -319,29 +312,4 @@ public class PlayerMovementGrappling : MonoBehaviour
 
         return velocityXZ + velocityY;
     }
-
-    //#region Text & Debugging
-
-    //public TextMeshProUGUI text_speed;
-    //public TextMeshProUGUI text_mode;
-    //private void TextStuff()
-    //{
-    //    Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-    //    if (OnSlope())
-    //        text_speed.SetText("Speed: " + Round(rb.velocity.magnitude, 1) + " / " + Round(moveSpeed, 1));
-
-    //    else
-    //        text_speed.SetText("Speed: " + Round(flatVel.magnitude, 1) + " / " + Round(moveSpeed, 1));
-
-    //    text_mode.SetText(state.ToString());
-    //}
-
-    //public static float Round(float value, int digits)
-    //{
-    //    float mult = Mathf.Pow(10.0f, (float)digits);
-    //    return Mathf.Round(value * mult) / mult;
-    //}
-
-    //#endregion
 }

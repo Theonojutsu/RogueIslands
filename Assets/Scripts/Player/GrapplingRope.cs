@@ -8,13 +8,13 @@ public class GrapplingRope : MonoBehaviour
     public Shoot grappling;
 
     [Header("Settings")]
-    public int quality = 200; // how many segments the rope will be split up in
-    public float damper = 14; // this slows the simulation down, so that not the entire rope is affected the same
-    public float strength = 800; // how hard the simulation tries to get to the target point
-    public float velocity = 15; // velocity of the animation
-    public float waveCount = 3; // how many waves are being simulated
-    public float waveHeight = 1;
-    public AnimationCurve affectCurve;
+    [SerializeField] int quality = 200; // how many segments the rope will be split up in
+    [SerializeField] float damper = 14; // this slows the simulation down, so that not the entire rope is affected the same
+    [SerializeField] float strength = 800; // how hard the simulation tries to get to the target point
+    [SerializeField] float velocity = 15; // velocity of the animation
+    [SerializeField] float waveCount = 3; // how many waves are being simulated
+    [SerializeField] float waveHeight = 1;
+    [SerializeField] AnimationCurve affectCurve;
 
     private Spring spring; // a custom script that returns the values needed for the animation
     private LineRenderer lr;
