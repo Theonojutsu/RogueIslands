@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratedIslands : MonoBehaviour
+public class IslandsGenerator : MonoBehaviour
 {
     private Transform monTransfo;
     [SerializeField] GameObject prefabObjet;

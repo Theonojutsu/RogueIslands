@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IslandsGenerator : MonoBehaviour
+public class IslandsManager : MonoBehaviour
 {
     [SerializeField] GameObject island;
     [SerializeField] float spacingIsland = 500f;
@@ -14,7 +14,7 @@ public class IslandsGenerator : MonoBehaviour
 
     void Awake()
     {
-        IslandManager();
+        IslandRegister();
         CreateIslands(1, L3);
     }
 
@@ -22,11 +22,13 @@ public class IslandsGenerator : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Quay"))
         {
-            IslandManager();
+            IslandRegister();
         }
     }
 
-    void IslandManager()
+    // Stocke les iles instanciées dans des listes dans le but de trier ces dernières
+    // et de détruire les bonnes iles au fur et à mesure que le niveau avance. 
+    void IslandRegister()
     {
         if (L1.Count > 0)
         {
