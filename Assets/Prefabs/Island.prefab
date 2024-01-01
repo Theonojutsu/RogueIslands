@@ -48,5 +48,6 @@ MonoBehaviour:
     type: 3}
   limiteGauche: -600
   limiteDroite: 600
+  ecartPosZ: 100
   distanceDeLimite: 300
   distanceMinEntreObjets: 300
