@@ -10,8 +10,8 @@ public class ThrowAnchor : MonoBehaviour
     {
         if (Input.GetButtonDown("RightClic/R1"))
         {
-            rbAnchor.AddForce(new Vector3(0,0,10000), ForceMode.Impulse);
             Debug.Log("shoote");
+            rbAnchor.AddRelativeForce(new Vector3(0, -10000, 0), ForceMode.Impulse);
         }
     }
 }
