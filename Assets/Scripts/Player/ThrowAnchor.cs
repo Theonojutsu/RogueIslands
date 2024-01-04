@@ -25,7 +25,7 @@ public class ThrowAnchor : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(shootDirection);
             currentAnchor = Instantiate(anchorPrefab, transform.position, rotation);
 
-            rbAnchor = currentAnchor.GetComponent<Rigidbody>();
+            rbAnchor = currentAnchor.GetComponentInChildren<Rigidbody>();
             rbAnchor.AddForce(shootDirection.normalized * 30000f, ForceMode.Impulse);
         }
     }
@@ -34,10 +34,12 @@ public class ThrowAnchor : MonoBehaviour
     {
         if ((currentAnchor != null) && (!doOnce))
         {
-            float distance = Vector3.Distance(currentAnchor.transform.position, transform.position);
+            float distance = Vector3.Distance(rbAnchor.position, transform.position);
             // Debug.Log("distance :" + distance);
 
-            if (distance >= 20f)
+            float anchorVel = rbAnchor.velocity.magnitude;
+
+            if ((distance >= 15f) && (anchorVel >= 15))
             {
                 doOnce = true;
                 ApplyVelocity();
@@ -51,7 +53,10 @@ public class ThrowAnchor : MonoBehaviour
         rbPlayer.angularVelocity = Vector3.zero;
 
         // Dash
-        rbPlayer.velocity *= 10;
+        Vector3 dashDirection = rbAnchor.position - transform.position;
+
+        rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
+        //rbPlayer.velocity = new(10,10,10);
     }
 
     void OnDrawGizmos()
@@ -59,7 +64,7 @@ public class ThrowAnchor : MonoBehaviour
         if (currentAnchor != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, currentAnchor.transform.position);
+            Gizmos.DrawLine(transform.position, rbAnchor.position);
         }
     }
 

@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3752a3518bc11f94fb8e66bbd02dfcfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorPrefab: {fileID: 3475905873815257329, guid: fe50fabfab621a140933a903a1cf251f,
+  anchorPrefab: {fileID: 7838630427891078142, guid: 384e32849e1bc2247b869e8b27b5fdef,
     type: 3}
   rbPlayer: {fileID: 48828822}
 --- !u!1 &153301409
