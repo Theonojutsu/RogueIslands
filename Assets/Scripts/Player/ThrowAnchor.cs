@@ -1,9 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ThrowAnchor : MonoBehaviour
 {
     [SerializeField] GameObject anchorPrefab;
+    [SerializeField] Transform chainHandle;
     [SerializeField] Rigidbody rbPlayer;
+    [SerializeField] LineRenderer line;
+    [SerializeField] int powerThrow = 30000;
+
     GameObject currentAnchor;
     Rigidbody rbAnchor;
     bool doOnce = false;
@@ -13,20 +19,29 @@ public class ThrowAnchor : MonoBehaviour
         if (Input.GetButtonDown("RightClic/R1"))
         {
             // Détruire l'ancienne ancre s'il y en a une
-            if (currentAnchor != null)
+            if ((currentAnchor != null) && (line.enabled))
             {
                 Destroy(currentAnchor);
+                line.enabled = !line.enabled;
                 doOnce = false;
             }
 
+            // Target
             Vector3 cursorPosition = GetCursorPosition();
             Vector3 shootDirection = cursorPosition - transform.position;
 
             Quaternion rotation = Quaternion.LookRotation(shootDirection);
             currentAnchor = Instantiate(anchorPrefab, transform.position, rotation);
 
-            rbAnchor = currentAnchor.GetComponentInChildren<Rigidbody>();
-            rbAnchor.AddForce(shootDirection.normalized * 30000f, ForceMode.Impulse);
+            // Chaine
+            Transform chainHandleTransfo = currentAnchor.transform.GetChild(0);
+            chainHandle.position = chainHandleTransfo.position;
+            chainHandle.parent = chainHandleTransfo;
+            line.enabled = !line.enabled;
+
+            // Shooter l'ancre
+            rbAnchor = currentAnchor.GetComponent<Rigidbody>();
+            rbAnchor.AddForce(shootDirection.normalized * powerThrow, ForceMode.Impulse);
         }
     }
 
