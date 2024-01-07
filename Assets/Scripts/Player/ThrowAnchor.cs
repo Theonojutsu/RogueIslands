@@ -23,6 +23,13 @@ public class ThrowAnchor : MonoBehaviour
     {
         LaunchAnchor(ref anchorRight,ref rbAnchorRight, "RightClic/R1",ref doOnceRight, lineRight, chainEndRight);
         LaunchAnchor(ref anchorLeft,ref rbAnchorLeft, "LeftClic/L1",ref doOnceLeft, lineLeft, chainEndLeft);
+
+        CheckAnchorDistance(anchorRight, ref doOnceRight, rbAnchorRight, 15f); // 15f est la distance maximale
+        CheckAnchorDistance(anchorLeft, ref doOnceLeft, rbAnchorLeft, 15f);
+
+        // Limite la distance du joueur par rapport à l'ancre
+        LimitPlayerDistance(rbPlayer, anchorRight, 15f); // 15f est la distance maximale
+        LimitPlayerDistance(rbPlayer, anchorLeft, 15f);
     }
 
     void LaunchAnchor(ref GameObject currentAnchor, ref Rigidbody rbAnchor, string inputShoot, ref bool doOnce, LineRenderer line, Transform chainEnd)
@@ -57,6 +64,44 @@ public class ThrowAnchor : MonoBehaviour
         }
     }
 
+    void CheckAnchorDistance(GameObject anchor, ref bool doOnce, Rigidbody rbAnchor, float maxDistance)
+    {
+        if (anchor != null && !doOnce)
+        {
+            float distance = Vector3.Distance(rbAnchor.position, transform.position);
+
+            if (distance >= maxDistance)
+            {
+                doOnce = true;
+                // Ajoutez ici le code pour arrêter l'ancre
+                rbAnchor.velocity = Vector3.zero;
+                rbAnchor.isKinematic = true;
+                // Vous pouvez également détruire l'ancre ici si nécessaire
+            }
+        }
+    }
+
+    void LimitPlayerDistance(Rigidbody playerRb, GameObject anchor, float maxDistance)
+    {
+        if (anchor != null)
+        {
+            float distance = Vector3.Distance(playerRb.position, anchor.transform.position);
+
+            if (distance > maxDistance)
+            {
+                Vector3 direction = (playerRb.position - anchor.transform.position).normalized;
+                playerRb.position = anchor.transform.position + direction * maxDistance;
+            }
+        }
+    }
+
+    Vector3 GetCursorPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
+        return ray.GetPoint(10f);
+    }
+
     //void LateUpdate()
     //{
     //    //if ((anchorRight != null) && (!doOnce))
@@ -83,13 +128,6 @@ public class ThrowAnchor : MonoBehaviour
 
     //    //rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
     //}
-
-    Vector3 GetCursorPosition()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-
-        return ray.GetPoint(10f);
-    }
 }
 
 //using UnityEngine;
