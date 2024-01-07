@@ -32,9 +32,7 @@ public class ThrowAnchor : MonoBehaviour
             // Détruire l'ancienne ancre s'il y en a une
             if ((currentAnchor != null) && (line.enabled == true))
             {
-                Debug.Log("détruitFDP");
                 Destroy(currentAnchor);
-                //line.enabled = false;
                 doOnce = false;
             }
 
@@ -59,44 +57,37 @@ public class ThrowAnchor : MonoBehaviour
         }
     }
 
-    void LateUpdate()
-    {
-        //if ((anchorRight != null) && (!doOnce))
-        //{
-        //    float distance = Vector3.Distance(rbAnchor.position, transform.position);
+    //void LateUpdate()
+    //{
+    //    //if ((anchorRight != null) && (!doOnce))
+    //    //{
+    //    //    float distance = Vector3.Distance(rbAnchor.position, transform.position);
 
-        //    float anchorVel = rbAnchor.velocity.magnitude;
+    //    //    float anchorVel = rbAnchor.velocity.magnitude;
 
-        //    if ((distance >= 15f) && (anchorVel >= 15))
-        //    {
-        //        doOnce = true;
-        //        ApplyVelocity();
-        //    }
-        //}
-    }
+    //    //    if ((distance >= 15f) && (anchorVel >= 15))
+    //    //    {
+    //    //        doOnce = true;
+    //    //        ApplyVelocity();
+    //    //    }
+    //    //}
+    //}
 
-    void ApplyVelocity()
-    {
-        //rbPlayer.velocity = Vector3.zero;
-        //rbPlayer.angularVelocity = Vector3.zero;
+    //void ApplyVelocity()
+    //{
+    //    //rbPlayer.velocity = Vector3.zero;
+    //    //rbPlayer.angularVelocity = Vector3.zero;
 
-        //// Dash
-        //Vector3 dashDirection = rbAnchor.position - transform.position;
+    //    //// Dash
+    //    //Vector3 dashDirection = rbAnchor.position - transform.position;
 
-        //rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
-    }
+    //    //rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
+    //}
 
     Vector3 GetCursorPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            return hit.point;
-        }
-
-        // Si le rayon ne touche rien, utilise une position par défaut
         return ray.GetPoint(10f);
     }
 }
