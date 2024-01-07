@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChainRenderer : MonoBehaviour
@@ -10,13 +8,13 @@ public class ChainRenderer : MonoBehaviour
 
     void Start()
     {
-        line.enabled = !line.enabled;
+        line.enabled = false;
         line.positionCount = 2;
     }
 
     void Update()
     {
-        if (line.enabled)
+        if (line.enabled == true)
         {
             line.SetPosition(0, pos1.position);
             line.SetPosition(1, pos2.position);

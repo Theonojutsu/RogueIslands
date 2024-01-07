@@ -5,24 +5,36 @@ using UnityEngine;
 public class ThrowAnchor : MonoBehaviour
 {
     [SerializeField] GameObject anchorPrefab;
-    [SerializeField] Transform chainHandle;
+    [SerializeField] Transform chainEndRight;
+    [SerializeField] Transform chainEndLeft;
     [SerializeField] Rigidbody rbPlayer;
-    [SerializeField] LineRenderer line;
+    [SerializeField] LineRenderer lineRight;
+    [SerializeField] LineRenderer lineLeft;
     [SerializeField] int powerThrow = 30000;
 
-    GameObject currentAnchor;
-    Rigidbody rbAnchor;
-    bool doOnce = false;
+    GameObject anchorRight;
+    GameObject anchorLeft;
+    Rigidbody rbAnchorRight;
+    Rigidbody rbAnchorLeft;
+    bool doOnceRight = false;
+    bool doOnceLeft = false;
 
     void Update()
     {
-        if (Input.GetButtonDown("RightClic/R1"))
+        LaunchAnchor(ref anchorRight,ref rbAnchorRight, "RightClic/R1",ref doOnceRight, lineRight, chainEndRight);
+        LaunchAnchor(ref anchorLeft,ref rbAnchorLeft, "LeftClic/L1",ref doOnceLeft, lineLeft, chainEndLeft);
+    }
+
+    void LaunchAnchor(ref GameObject currentAnchor, ref Rigidbody rbAnchor, string inputShoot, ref bool doOnce, LineRenderer line, Transform chainEnd)
+    {
+        if (Input.GetButtonDown(inputShoot))
         {
             // Détruire l'ancienne ancre s'il y en a une
-            if ((currentAnchor != null) && (line.enabled))
+            if ((currentAnchor != null) && (line.enabled == true))
             {
+                Debug.Log("détruitFDP");
                 Destroy(currentAnchor);
-                line.enabled = !line.enabled;
+                //line.enabled = false;
                 doOnce = false;
             }
 
@@ -35,52 +47,43 @@ public class ThrowAnchor : MonoBehaviour
 
             // Chaine
             Transform chainHandleTransfo = currentAnchor.transform.GetChild(0);
-            chainHandle.position = chainHandleTransfo.position;
-            chainHandle.parent = chainHandleTransfo;
-            line.enabled = !line.enabled;
+            chainEnd.position = chainHandleTransfo.position;
+            chainEnd.parent = chainHandleTransfo;
+
 
             // Shooter l'ancre
             rbAnchor = currentAnchor.GetComponent<Rigidbody>();
             rbAnchor.AddForce(shootDirection.normalized * powerThrow, ForceMode.Impulse);
+
+            line.enabled = true;
         }
     }
 
     void LateUpdate()
     {
-        if ((currentAnchor != null) && (!doOnce))
-        {
-            float distance = Vector3.Distance(rbAnchor.position, transform.position);
-            // Debug.Log("distance :" + distance);
+        //if ((anchorRight != null) && (!doOnce))
+        //{
+        //    float distance = Vector3.Distance(rbAnchor.position, transform.position);
 
-            float anchorVel = rbAnchor.velocity.magnitude;
+        //    float anchorVel = rbAnchor.velocity.magnitude;
 
-            if ((distance >= 15f) && (anchorVel >= 15))
-            {
-                doOnce = true;
-                ApplyVelocity();
-            }
-        }
+        //    if ((distance >= 15f) && (anchorVel >= 15))
+        //    {
+        //        doOnce = true;
+        //        ApplyVelocity();
+        //    }
+        //}
     }
 
     void ApplyVelocity()
     {
-        rbPlayer.velocity = Vector3.zero;
-        rbPlayer.angularVelocity = Vector3.zero;
+        //rbPlayer.velocity = Vector3.zero;
+        //rbPlayer.angularVelocity = Vector3.zero;
 
-        // Dash
-        Vector3 dashDirection = rbAnchor.position - transform.position;
+        //// Dash
+        //Vector3 dashDirection = rbAnchor.position - transform.position;
 
-        rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
-        //rbPlayer.velocity = new(10,10,10);
-    }
-
-    void OnDrawGizmos()
-    {
-        if (currentAnchor != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, rbAnchor.position);
-        }
+        //rbPlayer.AddForce(dashDirection.normalized * 15f, ForceMode.Impulse);
     }
 
     Vector3 GetCursorPosition()
